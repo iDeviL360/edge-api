@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import PostController from '../controllers/post.controller';
+import { fieldsValidation } from '../middlewares/fields.validations';
+import { createPostSchema, updatePostSchema } from '../schemas/post.schema';
 
 const router = Router();
 const postController = new PostController();
@@ -81,9 +83,9 @@ router.get('/posts/:postId', postController.getPostById);
  *          200:
  *          500:
  */
-router.post('/posts', postController.createPost);
+router.post('/posts', fieldsValidation(createPostSchema), postController.createPost);
 
-router.put('/posts/:postId', postController.updatePost);
+router.put('/posts/:postId', fieldsValidation(updatePostSchema), postController.updatePost);
 
 router.delete('/posts/:postId', postController.deletePostById);
 

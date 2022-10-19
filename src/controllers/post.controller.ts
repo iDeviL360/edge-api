@@ -18,12 +18,14 @@ export default class PostController {
                 return res.status(200).json(response);
             } else {
                 return res.status(400).json({
-                    'message': 'Something went wrong'
+                    'message': 'Bad Request'
                 })
             }
     
         } catch (error) {
-            return res.status(500).json(error);
+            return res.status(500).json({
+                'message': error
+            });
         }
     
     }
@@ -38,24 +40,26 @@ export default class PostController {
     
             const data = await fetch(`https://jsonplaceholder.typicode.com/posts/${ postId }`);
             
-            if(data.status === 200) {
+            if(data.ok) {
                 const response = await data.json();
                 return res.status(200).json(response);
             } else {
                 return res.status(400).json({
-                    'message': 'Something went wrong'
+                    'message': 'Bad Request'
                 })
             }
     
         } catch (error) {
-            return res.status(500).json(error);
+            return res.status(500).json({
+                'message': error
+            });
         }
     
     }
 
     
 
-    public createPost = async (req : Request, res : Response) : Promise<Response<string>> => {
+    public createPost = async (req : Request<any, any, Post>, res : Response) => {
     
         try {
     
@@ -78,21 +82,19 @@ export default class PostController {
                 return res.status(201).json({
                     'message': 'Post was created successfully' 
                 });
-            } else {
-                return res.status(400).json({
-                    'message': 'Something went wrong'
-                })
-            }
+            } 
     
         } catch (error) {
-            return res.status(500).json(error);
+            return res.status(500).json({
+                "message": error
+            });
         }
     
     }
     
     
 
-    public updatePost = async (req : Request, res : Response) : Promise<Response<{ "message" : string, "post" : Post }>> => {
+    public updatePost = async (req : Request<{ postId : string }, any, Post>, res : Response) : Promise<Response<{ "message" : string, "post" : Post }>> => {
     
         try {
     
@@ -111,20 +113,23 @@ export default class PostController {
             });
             
             if(data.ok) {
-                const response = await data.json();
+                const response : Post = await data.json();
                 
                 return res.status(201).json({
                     'message': 'Post was updated successfully',
                     'post': response
                 });
             } else {
+
                 return res.status(400).json({
-                    'message': 'Something went wrong'
+                    'message': `Bad Request`
                 })
             }
     
         } catch (error) {
-            return res.status(500).json(error);
+            return res.status(500).json({
+                'message': error
+            });
         }
     
     }
@@ -146,12 +151,14 @@ export default class PostController {
                 });
             } else {
                 return res.status(400).json({
-                    'message': 'Something went wrong'
+                    'message': 'Bad Request'
                 })
             }
     
         } catch (error) {
-            return res.status(500).json(error);
+            return res.status(500).json({
+                'message': error
+            });
         }
     
     }
