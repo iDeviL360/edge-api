@@ -20,7 +20,7 @@ const postController = new PostController();
  *                      schema:
  *                          type: array
  *                          items: 
- *                              $ref: '#/components/schemas/post'
+ *                              $ref: '#/components/schemas/post'                      
  *          500:
  *              description: Error message
  *              content: 
@@ -28,13 +28,12 @@ const postController = new PostController();
  *                      schema:
  *                          type: object
  *                          properties:
- *                              mensaje:
+ *                              message:
  *                                  type: string
  *                                  description: The error message
  * 
  */
 router.get('/posts', postController.getPosts);
-
 
 
 /**
@@ -47,7 +46,7 @@ router.get('/posts', postController.getPosts);
  *          - $ref: '#components/parameters/postId'
  *      responses:
  *          200:
- *              description: Get a post using its specific Id
+ *              description: Get a post by its specific Id
  *              content: 
  *                  application/json:
  *                      schema:
@@ -59,7 +58,7 @@ router.get('/posts', postController.getPosts);
  *                      schema:
  *                          type: object
  *                          properties:
- *                              mensaje:
+ *                              message:
  *                                  type: string
  *                                  description: The error message
  * 
@@ -81,12 +80,135 @@ router.get('/posts/:postId', postController.getPostById);
  *                      $ref: '#/components/schemas/post'
  *      responses:
  *          200:
+ *              description: Message if the post was created successfully
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  description: response message
+ *          400:
+ *              description: Bad request message if somes of its properties are missing or are wrong
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              type: object
+ *                              properties:
+ *                                  path: 
+ *                                      type: array
+ *                                      items:
+ *                                          type: string
+ *                                          description: Invalid fields
+ *                                  message:
+ *                                      type: string
+ *                                      description: Invalid field message
  *          500:
+ *              description: Internal Server Error message
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
  */
 router.post('/posts', fieldsValidation(createPostSchema), postController.createPost);
 
+
+/**
+ * @swagger
+ * /posts/{postId}:
+ *  put:
+ *      summary: Update a post
+ *      tags: [posts]
+ *      parameters:
+ *          - $ref: '#components/parameters/postId'
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/post'
+ *      responses:
+ *          200:
+ *              description: Message if the post was updated successfully
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  description: response message
+ *                              post:
+ *                                  type: object
+ *                                  properties:
+ *                                      id:
+ *                                          type: number
+ *          400:
+ *              description: Bad request message if somes of its properties are missing or are wrong
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              type: object
+ *                              properties:
+ *                                  path: 
+ *                                      type: array
+ *                                      items:
+ *                                          type: string
+ *                                          description: Invalid fields
+ *                                  message:
+ *                                      type: string
+ *                                      description: Invalid field message
+ *          500:
+ *              description: Internal Server Error message
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ */
 router.put('/posts/:postId', fieldsValidation(updatePostSchema), postController.updatePost);
 
+
+/**
+ * @swagger
+ * /posts/{postId}:
+ *  delete:
+ *      summary: Delete a post using its id
+ *      tags: [posts]
+ *      parameters:
+ *          - $ref: '#components/parameters/postId'
+ *      responses:
+ *          200:
+ *              description: Delete a post
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *          500:
+ *              description: Error message
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              message:
+ *                                  type: string
+ *                                  description: The error message
+ * 
+ */
 router.delete('/posts/:postId', postController.deletePostById);
 
 

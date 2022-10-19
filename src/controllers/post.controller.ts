@@ -13,7 +13,7 @@ export default class PostController {
     
             const data = await fetch('https://jsonplaceholder.typicode.com/posts/');
             
-            if(data.status === 200) {
+            if(data.ok) {
                 const response = await data.json();
                 return res.status(200).json(response);
             } else {
@@ -145,7 +145,7 @@ export default class PostController {
                 method: 'DELETE'
             });
             
-            if(data.status === 200) {
+            if(data.ok) {
                 return res.status(200).json({
                     'message': 'Post deleted'
                 });
