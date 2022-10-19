@@ -41,8 +41,12 @@ export default class PostController {
             const data = await fetch(`https://jsonplaceholder.typicode.com/posts/${ postId }`);
             
             if(data.ok) {
+
+
                 const response = await data.json();
                 return res.status(200).json(response);
+
+                
             } else {
                 return res.status(400).json({
                     'message': 'Bad Request'
@@ -113,6 +117,7 @@ export default class PostController {
             });
             
             if(data.ok) {
+
                 const response : Post = await data.json();
                 
                 return res.status(201).json({
